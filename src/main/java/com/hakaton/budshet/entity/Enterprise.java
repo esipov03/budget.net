@@ -1,5 +1,7 @@
 package com.hakaton.budshet.entity;
 
+import com.hakaton.budshet.model.request.AdminEnterpriseRequest;
+
 import javax.persistence.*;
 
 @Entity
@@ -16,6 +18,12 @@ public class Enterprise {
     private int parentId;
 
     public Enterprise() {
+    }
+
+    public Enterprise(AdminEnterpriseRequest request){
+        this.name=request.getName();
+        this.inn=request.getInn();
+        this.parentId= request.getParentId();
     }
 
     public int getId() {

@@ -1,5 +1,6 @@
 package com.hakaton.budshet.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.apache.tomcat.jni.Proc;
 
 import javax.persistence.*;
@@ -34,6 +35,7 @@ public class Process {
     @Temporal(TemporalType.DATE)
     private Date dateApproval;
 
+    @JsonIgnore
     @ManyToMany
     private List<Process>  previousProcess;
 
@@ -45,6 +47,7 @@ public class Process {
     @ManyToOne
     private Enterprise executorEnterprise;
 
+    @JsonIgnore
     @ManyToMany
     private List<Process> nextProcess;
 
