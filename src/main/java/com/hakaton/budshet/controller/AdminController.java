@@ -2,6 +2,7 @@ package com.hakaton.budshet.controller;
 
 import com.hakaton.budshet.entity.Enterprise;
 import com.hakaton.budshet.model.request.AdminEnterpriseRequest;
+import com.hakaton.budshet.model.request.AdminProcessRequest;
 import com.hakaton.budshet.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -10,8 +11,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-
 import java.util.List;
 
 @Controller
@@ -30,7 +29,7 @@ public class AdminController {
         return adminService.getAllEnterprise();
     }
 
-    @PostMapping("/enterprise")
+    @PostMapping(value = "/enterprise")
     public ResponseEntity<?> createEnterprise(@RequestBody AdminEnterpriseRequest request){
         return adminService.createNewEnterprise(request);
     }
@@ -38,6 +37,11 @@ public class AdminController {
     @GetMapping("/process")
     public ResponseEntity<?> getProcess(){
         return adminService.getProcess();
+    }
+
+    @PostMapping("/process")
+    public ResponseEntity<?> createProcess(@RequestBody AdminProcessRequest request){
+        return adminService.createProcess(request);
     }
 
 }

@@ -7,6 +7,7 @@ import com.hakaton.budshet.model.xml.ProcessXmlModel;
 import com.hakaton.budshet.repository.EnterpriseRepository;
 import com.hakaton.budshet.repository.ProcessRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
@@ -86,5 +87,13 @@ public class ProcessService {
 
         return message;
     }
+
+    public ResponseEntity<List<Enterprise>> getEnterpriseByParentId(int id){
+        List<Enterprise> enterprises = enterpriseRepository.getEnterpriseByParentId(id);
+        return ResponseEntity.ok(enterprises);
+
+    }
+
+
 }
 

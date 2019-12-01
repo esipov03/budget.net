@@ -1,15 +1,76 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Бюджет Москвы</title>
-</head>
-<body>
-<form method="POST" enctype="multipart/form-data"
-      action="/upload">
-    File to upload: <input type="file" name="file"><br /> Name: <input
-        type="text" name="name"><br /> <br /> <input type="submit"
-                                                     value="Upload"> Press here to upload the file!
-</form>
-</body>
+<html>
+    <head>
+        <meta http-equiv="Cache-Control" content="no-cache">
+
+        <link rel="stylesheet" href="css/main.css">
+    </head>
+    <body>
+
+    <div class="header">
+        <div class="our-logo">
+            Moscow | .net
+        </div>
+        <div class="account">
+            <p><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg width="25px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 350 350" style="enable-background:new 0 0 350 350;" xml:space="preserve"><g><path d="M175,171.173c38.914,0,70.463-38.318,70.463-85.586C245.463,38.318,235.105,0,175,0s-70.465,38.318-70.465,85.587C104.535,132.855,136.084,171.173,175,171.173z"/><path d="M41.909,301.853C41.897,298.971,41.885,301.041,41.909,301.853L41.909,301.853z"/><path d="M308.085,304.104C308.123,303.315,308.098,298.63,308.085,304.104L308.085,304.104z"/><path d="M307.935,298.397c-1.305-82.342-12.059-105.805-94.352-120.657c0,0-11.584,14.761-38.584,14.761s-38.586-14.761-38.586-14.761c-81.395,14.69-92.803,37.805-94.303,117.982c-0.123,6.547-0.18,6.891-0.202,6.131c0.005,1.424,0.011,4.058,0.011,8.651c0,0,19.592,39.496,133.08,39.496c113.486,0,133.08-39.496,133.08-39.496c0-2.951,0.002-5.003,0.005-6.399C308.062,304.575,308.018,303.664,307.935,298.397z"/></g></svg></p>
+        </div>
+    </div>
+    <svg id="svg-socket" viewBox="-500 -500 1000 1000" width="100%" height="100%">
+        <defs>
+            <!--  Monthes word path -->
+            <path id="str" d="M 0, -147 C -83,-147 -147,-83   -147,0    C  -147,83  -83,147  0,147    C  83,147  147,83  147,0   C  147,-83  83,-147  0,-147" stroke="#f0f0ff" stroke-width="12" fill="#f0f0ff"></path>
+            <line id="clockline" x1="0" y1="0" x2="10" y2="0" stroke="red" stroke-width="1"></line>
+            <path id="processLine" stroke="yellow" stroke-width="14" fill="none"></path>
+        </defs>
+
+        <!-- Coord lines -->
+        <line x1="0" y1="-500" x2="0" y2="500" stroke="black" stroke-width="1" opacity="0.1"></line>
+        <line x1="-500" y1="0" x2="500" y2="0" stroke="black" stroke-width="1" opacity="0.1"></line>
+        <!-- <line x1="0" y1="0" x2="0" y2="500" stroke="black" stroke-width="1" /> -->
+
+        <!-- MONTHS  NAMES -->
+        <path id="str" d="M 140, 0 C  140,-80  80,-140  0,-140 C -80,-140 -140,-80 -140,0    C  -140,80  -80,140  0,140    C  80,140  140,80  140,0 " stroke="#f0f0ff" stroke-width="1em" fill="none"></path>
+        <text style="font-family: Arial; font-size: 0.73em;" opacity="0.5">
+            <textPath href="#str">&nbsp;&nbsp;january &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; fabruary &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; march &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; april &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; may &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; june &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; jule &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; august &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; september &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; octouber &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; november &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; december&nbsp;&nbsp;&nbsp;&nbsp;</textPath>
+        </text>
+        <line x1="0" y1="0" x2="0" y2="-170" stroke="#333" id="linne_move" style="cursor: pointer; z-index:10;" stroke-width="1" />
+        <line x1="0" y1="0" x2="-500" y2="0" stroke="#333" id="linne_move" style="cursor: pointer; z-index:10;" stroke-width="1" />
+
+        <!--  PROCESS -->
+
+    </svg>
+        
+        <div class="company">
+            <div class="search">
+                <label for="search" class="search-ico"><svg fill="#bababa" width="15" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 56.966 56.966" style="enable-background:new 0 0 56.966 56.966;" xml:space="preserve"><path d="M55.146,51.887L41.588,37.786c3.486-4.144,5.396-9.358,5.396-14.786c0-12.682-10.318-23-23-23s-23,10.318-23,23 s10.318,23,23,23c4.761,0,9.298-1.436,13.177-4.162l13.661,14.208c0.571,0.593,1.339,0.92,2.162,0.92 c0.779,0,1.518-0.297,2.079-0.837C56.255,54.982,56.293,53.08,55.146,51.887z M23.984,6c9.374,0,17,7.626,17,17s-7.626,17-17,17 s-17-7.626-17-17S14.61,6,23.984,6z"/></svg></label>
+                <input autocomplete="false" id="search" type="text" placeholder="Поиск по организациям" class="search-input">
+            </div>
+            <div class="settings">
+                <div>
+                <label for="date_from">От</label>
+                <input min="01.01.2000" max="01.01.2100" id="date_from" type="date">
+                </div>
+                <div>
+                <label for="date_to">До</label>
+                <input min="01.01.2000" max="01.01.2100" id="date_to" type="date">
+                </div>
+            </div>
+            <div class="company-main">
+                <div class="company-select">
+                    <div class="form">
+                        <div class="inputGroup">
+                            <input id="allSelector" type="checkbox"/>
+                            <label for="allSelector"><span style="margin-left: 50px;">Выделить все</span></label>
+                        </div>
+                    </div>
+                    <div class="company-list" id="companyList">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="js/index.js"></script>
+        <script src="js/main.js"></script>
+
+    </body>
 </html>

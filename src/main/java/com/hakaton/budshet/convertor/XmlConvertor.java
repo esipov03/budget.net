@@ -26,7 +26,6 @@ public class XmlConvertor {
             processXml.setStatus((getTagValue("Status", element)));
             processXml.setDateEnd((getTagValue("DateEnd",element)));
 
-
         }
 
         return processXml;

@@ -4,6 +4,7 @@ import com.hakaton.budshet.convertor.AdminProcessConverter;
 import com.hakaton.budshet.entity.Enterprise;
 import com.hakaton.budshet.entity.Process;
 import com.hakaton.budshet.model.request.AdminEnterpriseRequest;
+import com.hakaton.budshet.model.request.AdminProcessRequest;
 import com.hakaton.budshet.model.response.AdminProcessResponse;
 import com.hakaton.budshet.repository.EnterpriseRepository;
 import com.hakaton.budshet.repository.ProcessRepository;
@@ -38,6 +39,37 @@ public class AdminService {
 
         return ResponseEntity.ok(response);
     }
+
+    public ResponseEntity<?> createProcess(AdminProcessRequest request){
+        Process process = new Process();
+        process.setStatusDocument(request.getStatusDocument());
+        process.setNumber(request.getNumber());
+        process.setDescription(request.getDescription());
+        process.setDateEnd(request.getDateEnd());
+        process.setDateCreate(request.getDateCreate());
+        Enterprise founder = enterpriseRepository.getOne(request.getFounderEnterprise());
+        Enterprise executor = enterpriseRepository.getOne(request.getExecutorEnterprise());
+        List<Process> nextProcesses =  new ArrayList<>();
+        request.getNextProcess().forEach(p->{
+            Process nextProcess = processRepository.getOne(p);
+            nextProcesses.add(nextProcess);
+        });
+        List<Process> previousProcesses  = new ArrayList<>();
+        request.getPreviousProcess().forEach(p->{
+            Process previousProcess = processRepository.getOne(p);
+            previousProcesses.add(previousProcess);
+
+        });
+
+        process.setNextProcess(nextProcesses);
+        process.setPreviousProcess(previousProcesses);
+        process.setFounderEnterprise(founder);
+        process.setExecutorEnterprise(executor);
+        processRepository.save(process);
+        return ResponseEntity.ok().build();
+
+    }
+
 
     public ResponseEntity<List<Enterprise>> getAllEnterprise(){
 
