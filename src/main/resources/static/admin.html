@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta http-equiv="Cache-Control" content="no-cache">
+    <title>Админ панель</title>
+</head>
+<body>
+<link rel="stylesheet" href="css/admin.css">
+<div class="header">
+    <div class="our-logo">
+        Moscow | .net
+    </div>
+    <div class="account">
+        <p><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg width="25px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 350 350" style="enable-background:new 0 0 350 350;" xml:space="preserve"><g><path d="M175,171.173c38.914,0,70.463-38.318,70.463-85.586C245.463,38.318,235.105,0,175,0s-70.465,38.318-70.465,85.587C104.535,132.855,136.084,171.173,175,171.173z"/><path d="M41.909,301.853C41.897,298.971,41.885,301.041,41.909,301.853L41.909,301.853z"/><path d="M308.085,304.104C308.123,303.315,308.098,298.63,308.085,304.104L308.085,304.104z"/><path d="M307.935,298.397c-1.305-82.342-12.059-105.805-94.352-120.657c0,0-11.584,14.761-38.584,14.761s-38.586-14.761-38.586-14.761c-81.395,14.69-92.803,37.805-94.303,117.982c-0.123,6.547-0.18,6.891-0.202,6.131c0.005,1.424,0.011,4.058,0.011,8.651c0,0,19.592,39.496,133.08,39.496c113.486,0,133.08-39.496,133.08-39.496c0-2.951,0.002-5.003,0.005-6.399C308.062,304.575,308.018,303.664,307.935,298.397z"/></g></svg></p>
+    </div>
+</div>
+
+<div class="main">
+<h2>Таблица 1</h2>
+    <div class="adder">
+        <form action="" id="form1">
+            <input required type="text" id="name" placeholder="Название">
+            <input required type="number" id="parentId" placeholder="Родитель">
+            <input required type="text" id="inn" placeholder="ИНН">
+            <button type="submit">Сохранить</button>
+        </form>
+    </div>
+<div id="t-1" class="tbl-table">
+    <div class="tbl-elem i-header">
+        <div class="i-id">ID</div>
+        <div class="i-name">Название</div>
+        <div class="i-parrent">Родитель</div>
+        <div class="i-inn">ИНН (Идентификатор для xml файла)</div>
+    </div>
+
+</div>
+
+<!--Организация-->
+
+<!--ID-->
+<!--Имя-->
+<!--Родитель-->
+<!--Инн (идентификатор для xml файла)-->
+
+
+<h2>Таблица 2</h2>
+<div class="process-table">
+    <div class="adder">
+        <form action="" id="form2">
+            <input required type="number" min="1" max="9" id="founderEnterprise" placeholder="Имя организации заказчика">
+            <input required type="number" min="1" max="9" id="executorEnterprise" placeholder="Имя организации исполнителя	">
+            <input required type="text" id="description" placeholder="Имя процесса">
+            inx`
+            <input type="date" id="dateCreate" placeholder="Начало">
+            <input type="date" id="dateEnd" placeholder="Окончание">
+
+            <button type="submit">Сохранить</button>
+        </form>
+    </div>
+    <table  class="table">
+        <thead>
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Имя организации заказчика</th>
+            <th scope="col">Имя организации исполнителя</th>
+            <th scope="col">Имя процесса</th>
+            <th scope="col">Начало</th>
+            <th scope="col">Окончание</th>
+            <th scope="col">Номер</th>
+            <th scope="col">Статус</th>
+        </tr>
+        </thead>
+        <tbody id="tbl-insert">
+
+        </tbody>
+    </table>
+</div>
+
+
+</div>
+
+<script>
+
+    /**
+     * Функция запросов на сервер
+     * @param type - тип запроса
+     * @param url - url
+     * @param data - массив с параметрами
+     * @param sync - асинхронен ли запрос
+     * @param success - функция, вызываемая после успешного выполнения (200)
+     * @param error - функция выполняемая после ошибки (!== 200)
+     * @param always - функция выполняемая всегда
+     **/
+    function ajax({
+                      type = 'get',
+                      url  = '/',
+                      data = [],
+                      sync = true
+                  }, success, error, always) {
+
+        const formData = new FormData();
+        for (param in data)
+            formData.append(param, data[param]);
+
+        const xmlHttp = new XMLHttpRequest();
+        xmlHttp.onreadystatechange = function () {
+            if (always)
+                always(xmlHttp.responseText, xmlHttp.status);
+            if (xmlHttp.readyState < 4) {
+                return false;
+            } else if (xmlHttp.status !== 200) {
+                if (error)
+                    error(xmlHttp.responseText, xmlHttp.status);
+                return false;
+            } else {
+                if (success)
+                    success(xmlHttp.responseText);
+            }
+        };
+
+        xmlHttp.open(type, url, sync);
+        xmlHttp.send(formData);
+    }
+</script>
+
+<script>
+    getTable1('/', createTabel, 't-1');
+    getTable2('/');
+    function getTable1(url,success, tId) {
+        ajax({
+            type: 'post', // задается тип запрос
+            url: url,
+            data: {
+                param1: 'data1',
+                param2: 'data2'
+            },
+            sync: true
+        }, function (data) {
+            data = '[{"id":1,"name":"Департамент финансов города Москвы","inn":"12345","parentId":0},{"id":2,"name":"Главные администраторы доходов бюджета города и главные администраторы источников финансирования дефицита бюджета Москвы","inn":"12346","parentId":0},{"id":3,"name":"Департамент экономической политики и развития города Москвы","inn":"12347","parentId":0},{"id":4,"name":"Главные распорядители бюджетных средств","inn":"12348","parentId":0},{"id":8,"name":"Главные администраторы доходов бюджета города и главные администраторы источников финансирования дефицита бюджета Департамент финансов города Москвы. Отдел 2","inn":"Р63","parentId":2},{"id":7,"name":"Главные администраторы доходов бюджета города и главные администраторы источников финансирования дефицита бюджета Департамент финансов города Москвы. Отдел 1","inn":"Р62","parentId":2},{"id":6,"name":"Департамент финансов города Москвы. Отдел 2","inn":"О15","parentId":1},{"id":5,"name":"Департамент финансов города Москвы. Отдел 1","inn":"О16","parentId":1},{"id":9,"name":"Главные администраторы доходов бюджета города и главные администраторы источников финансирования дефицита бюджета Департамент финансов города Москвы. Отдел 2. Отдел 1","inn":"Р87","parentId":8},{"id":10,"name":"Департамент экономической политики и развития города Москвы. Отдел 1","inn":"О76","parentId":3},{"id":11,"name":"Департамент экономической политики и развития города Москвы. Отдел 2","inn":"И53","parentId":3},{"id":12,"name":"Главные распорядители бюджетных средств. Отдел 1 ","inn":"Р09","parentId":4},{"id":13,"name":"Главные распорядители бюджетных средств. Отдел 2","inn":"Р10","parentId":4}]';
+            try {
+                data = JSON.parse(data);
+            } catch (e) {
+                console.log(e);
+                return false;
+            }
+
+            success(tId, data);
+        }, function (response, code) {
+            let data = '[{"id":1,"name":"Департамент финансов города Москвы","inn":"12345","parentId":0},{"id":2,"name":"Главные администраторы доходов бюджета города и главные администраторы источников финансирования дефицита бюджета Москвы","inn":"12346","parentId":0},{"id":3,"name":"Департамент экономической политики и развития города Москвы","inn":"12347","parentId":0},{"id":4,"name":"Главные распорядители бюджетных средств","inn":"12348","parentId":0},{"id":8,"name":"Главные администраторы доходов бюджета города и главные администраторы источников финансирования дефицита бюджета Департамент финансов города Москвы. Отдел 2","inn":"Р63","parentId":2},{"id":7,"name":"Главные администраторы доходов бюджета города и главные администраторы источников финансирования дефицита бюджета Департамент финансов города Москвы. Отдел 1","inn":"Р62","parentId":2},{"id":6,"name":"Департамент финансов города Москвы. Отдел 2","inn":"О15","parentId":1},{"id":5,"name":"Департамент финансов города Москвы. Отдел 1","inn":"О16","parentId":1},{"id":9,"name":"Главные администраторы доходов бюджета города и главные администраторы источников финансирования дефицита бюджета Департамент финансов города Москвы. Отдел 2. Отдел 1","inn":"Р87","parentId":8},{"id":10,"name":"Департамент экономической политики и развития города Москвы. Отдел 1","inn":"О76","parentId":3},{"id":11,"name":"Департамент экономической политики и развития города Москвы. Отдел 2","inn":"И53","parentId":3},{"id":12,"name":"Главные распорядители бюджетных средств. Отдел 1 ","inn":"Р09","parentId":4},{"id":13,"name":"Главные распорядители бюджетных средств. Отдел 2","inn":"Р10","parentId":4}]';
+            try {
+                data = JSON.parse(data);
+            } catch (e) {
+                console.log(e);
+                return false;
+            }
+
+            success(tId, data);
+        }, function (response, code) {
+
+        });
+    }
+
+    function getTable2(url) {
+        ajax({
+            type: 'post', // задается тип запрос
+            url: url,
+            data: {
+                param1: 'data1',
+                param2: 'data2'
+            },
+            sync: true
+        }, function (data) {
+            data = '[{"id":3,"description":"Сведения о предельных объемах бюджетных ассигнований на реализацию государственных программ города Москвы и осуществление непрограммных направлений деятельности органов государственной власти города Москвы","number":"64643","dateCreate":"2019-01-01","dateEnd":"2019-06-25","previousProcess":[2],"nextProcess":[4],"statusDocument":0,"founderEnterprise":{"id":4,"name":"Главные распорядители бюджетных средств"},"executorEnterprise":{"id":1,"name":"Департамент финансов города Москвы"}},{"id":1,"description":"Сценарные условия функционирования экономики города Москвы и основные параметры прогноза социально-экономического развития города Москвы на очередной финансовый год и плановый период","number":"62737","dateCreate":"2019-01-01","dateEnd":"2019-06-05","previousProcess":[],"nextProcess":[2],"statusDocument":0,"founderEnterprise":{"id":2,"name":"Главные администраторы доходов бюджета города и главные администраторы источников финансирования дефицита бюджета Москвы"},"executorEnterprise":{"id":1,"name":"Департамент финансов города Москвы"}},{"id":2,"description":"Прогнозные показатели по налоговым и неналоговым доходам бюджета города Москвы","number":"64642","dateCreate":"2019-01-01","dateEnd":"2019-06-15","previousProcess":[1],"nextProcess":[3],"statusDocument":0,"founderEnterprise":{"id":1,"name":"Департамент финансов города Москвы"},"executorEnterprise":{"id":2,"name":"Главные администраторы доходов бюджета города и главные администраторы источников финансирования дефицита бюджета Москвы"}},{"id":5,"description":"Распределение бюджетных ассигнований на очередной финансовый год и плановый период в разрезе разделов, подразделов, целевых статей и видов расходов бюджетной классификации Российской Федерации","number":"8002","dateCreate":"2019-01-01","dateEnd":"2019-07-10","previousProcess":[4],"nextProcess":[],"statusDocument":0,"founderEnterprise":{"id":1,"name":"Департамент финансов города Москвы"},"executorEnterprise":{"id":4,"name":"Главные распорядители бюджетных средств"}},{"id":4,"description":"Одобренные Бюджетной комиссией Правительства Москвы основные параметры прогноза социально-экономического развития города Москвы на очередной финансовый год и плановый период","number":"8001","dateCreate":"2019-01-01","dateEnd":"2019-07-01","previousProcess":[3],"nextProcess":[5,6,7],"statusDocument":0,"founderEnterprise":{"id":4,"name":"Главные распорядители бюджетных средств"},"executorEnterprise":{"id":3,"name":"Департамент экономической политики и развития города Москвы"}},{"id":6,"description":"предложения по увеличению объемов бюджетных ассигнований на очередной финансовый год и плановый период по конкретным направлениям расходов государственных программ города Москвы","number":"8003","dateCreate":"2019-01-01","dateEnd":"2019-07-10","previousProcess":[4],"nextProcess":[],"statusDocument":0,"founderEnterprise":{"id":1,"name":"Департамент финансов города Москвы"},"executorEnterprise":{"id":4,"name":"Главные распорядители бюджетных средств"}},{"id":7,"description":"Методики (проекты методик) и расчеты распределения межбюджетных трансфертов бюджетам внутригородских муниципальных образований в городе Москве","number":"8004","dateCreate":"2019-01-01","dateEnd":"2019-07-10","previousProcess":[4],"nextProcess":[8],"statusDocument":0,"founderEnterprise":{"id":1,"name":"Департамент финансов города Москвы"},"executorEnterprise":{"id":4,"name":"Главные распорядители бюджетных средств"}},{"id":8,"description":"Проект прогноза социально-экономического развития города Москвы на очередной финансовый год и плановый период, разработанный Департаментом экономической политики и развития города Москвы","number":"8005","dateCreate":"2019-01-01","dateEnd":"2019-08-05","previousProcess":[7],"nextProcess":[9],"statusDocument":0,"founderEnterprise":{"id":2,"name":"Главные администраторы доходов бюджета города и главные администраторы источников финансирования дефицита бюджета Москвы"},"executorEnterprise":{"id":1,"name":"Департамент финансов города Москвы"}},{"id":9,"description":"Уточненные прогнозные показатели по налоговым и неналоговым доходам бюджета города Москвы и поступлениям по источникам финансирования дефицита бюджета города Москвы","number":"8006","dateCreate":"2019-01-01","dateEnd":"2019-08-15","previousProcess":[8],"nextProcess":[],"statusDocument":0,"founderEnterprise":{"id":1,"name":"Департамент финансов города Москвы"},"executorEnterprise":{"id":2,"name":"Главные администраторы доходов бюджета города и главные администраторы источников финансирования дефицита бюджета Москвы"}}]';
+            try {
+                data = JSON.parse(data);
+            } catch (e) {
+                console.log(e);
+                return false;
+            }
+            createTable2(data);
+        }, function (response, code) {
+            let data = '[{"id":3,"description":"Сведения о предельных объемах бюджетных ассигнований на реализацию государственных программ города Москвы и осуществление непрограммных направлений деятельности органов государственной власти города Москвы","number":"64643","dateCreate":"2019-01-01","dateEnd":"2019-06-25","previousProcess":[2],"nextProcess":[4],"statusDocument":0,"founderEnterprise":{"id":4,"name":"Главные распорядители бюджетных средств"},"executorEnterprise":{"id":1,"name":"Департамент финансов города Москвы"}},{"id":1,"description":"Сценарные условия функционирования экономики города Москвы и основные параметры прогноза социально-экономического развития города Москвы на очередной финансовый год и плановый период","number":"62737","dateCreate":"2019-01-01","dateEnd":"2019-06-05","previousProcess":[],"nextProcess":[2],"statusDocument":0,"founderEnterprise":{"id":2,"name":"Главные администраторы доходов бюджета города и главные администраторы источников финансирования дефицита бюджета Москвы"},"executorEnterprise":{"id":1,"name":"Департамент финансов города Москвы"}},{"id":2,"description":"Прогнозные показатели по налоговым и неналоговым доходам бюджета города Москвы","number":"64642","dateCreate":"2019-01-01","dateEnd":"2019-06-15","previousProcess":[1],"nextProcess":[3],"statusDocument":0,"founderEnterprise":{"id":1,"name":"Департамент финансов города Москвы"},"executorEnterprise":{"id":2,"name":"Главные администраторы доходов бюджета города и главные администраторы источников финансирования дефицита бюджета Москвы"}},{"id":5,"description":"Распределение бюджетных ассигнований на очередной финансовый год и плановый период в разрезе разделов, подразделов, целевых статей и видов расходов бюджетной классификации Российской Федерации","number":"8002","dateCreate":"2019-01-01","dateEnd":"2019-07-10","previousProcess":[4],"nextProcess":[],"statusDocument":0,"founderEnterprise":{"id":1,"name":"Департамент финансов города Москвы"},"executorEnterprise":{"id":4,"name":"Главные распорядители бюджетных средств"}},{"id":4,"description":"Одобренные Бюджетной комиссией Правительства Москвы основные параметры прогноза социально-экономического развития города Москвы на очередной финансовый год и плановый период","number":"8001","dateCreate":"2019-01-01","dateEnd":"2019-07-01","previousProcess":[3],"nextProcess":[5,6,7],"statusDocument":0,"founderEnterprise":{"id":4,"name":"Главные распорядители бюджетных средств"},"executorEnterprise":{"id":3,"name":"Департамент экономической политики и развития города Москвы"}},{"id":6,"description":"предложения по увеличению объемов бюджетных ассигнований на очередной финансовый год и плановый период по конкретным направлениям расходов государственных программ города Москвы","number":"8003","dateCreate":"2019-01-01","dateEnd":"2019-07-10","previousProcess":[4],"nextProcess":[],"statusDocument":0,"founderEnterprise":{"id":1,"name":"Департамент финансов города Москвы"},"executorEnterprise":{"id":4,"name":"Главные распорядители бюджетных средств"}},{"id":7,"description":"Методики (проекты методик) и расчеты распределения межбюджетных трансфертов бюджетам внутригородских муниципальных образований в городе Москве","number":"8004","dateCreate":"2019-01-01","dateEnd":"2019-07-10","previousProcess":[4],"nextProcess":[8],"statusDocument":0,"founderEnterprise":{"id":1,"name":"Департамент финансов города Москвы"},"executorEnterprise":{"id":4,"name":"Главные распорядители бюджетных средств"}},{"id":8,"description":"Проект прогноза социально-экономического развития города Москвы на очередной финансовый год и плановый период, разработанный Департаментом экономической политики и развития города Москвы","number":"8005","dateCreate":"2019-01-01","dateEnd":"2019-08-05","previousProcess":[7],"nextProcess":[9],"statusDocument":0,"founderEnterprise":{"id":2,"name":"Главные администраторы доходов бюджета города и главные администраторы источников финансирования дефицита бюджета Москвы"},"executorEnterprise":{"id":1,"name":"Департамент финансов города Москвы"}},{"id":9,"description":"Уточненные прогнозные показатели по налоговым и неналоговым доходам бюджета города Москвы и поступлениям по источникам финансирования дефицита бюджета города Москвы","number":"8006","dateCreate":"2019-01-01","dateEnd":"2019-08-15","previousProcess":[8],"nextProcess":[],"statusDocument":0,"founderEnterprise":{"id":1,"name":"Департамент финансов города Москвы"},"executorEnterprise":{"id":2,"name":"Главные администраторы доходов бюджета города и главные администраторы источников финансирования дефицита бюджета Москвы"}}]';
+            try {
+                data = JSON.parse(data);
+            } catch (e) {
+                console.log(e);
+                return false;
+            }
+            createTable2(data);
+        }, function (response, code) {
+
+        });
+    }
+
+    function createTable2(data) {
+        const main = document.getElementById('tbl-insert');
+        data.forEach(elem => {
+            let dateCreate = new Date(elem.dateCreate);
+            dateCreate = dateCreate.getDate()+'.'+(dateCreate.getMonth()+1)+'.'+dateCreate.getFullYear();
+           let stopD = new Date(elem.dateEnd);
+            stopD = stopD.getDate()+'.'+(stopD.getMonth()+1)+'.'+stopD.getFullYear();
+            const tr = document.createElement('tr');
+            const dStatus = (elem.statusDocument == '0') ? 'Закончен' : 'Не закончен';
+            console.log(data);
+           tr.innerHTML = `
+                <th>${elem.id}</th>
+                <td>${elem.founderEnterprise.name}</td>
+                <td>${elem.executorEnterprise.name}</td>
+                <td>${elem.description}</td>
+                <td>${dateCreate}</td>
+                <td>${stopD}</td>
+                <td>${elem.number}</td>
+                <td>${dStatus}</td>`;
+            main.appendChild(tr);
+        });
+
+    }
+    function createTabel(tName, data) {
+        const main = document.getElementById(tName);
+        data.forEach(elem => {
+           const div = document.createElement('div');
+           div.className = 'tbl-elem';
+            div.innerHTML = `
+                    <div class="i-id">${elem.id}</div>
+                    <div class="i-name">${elem.name}</div>
+                    <div class="i-parrent">${elem.parentId}</div>
+                    <div class="i-inn">${elem.inn}</div>                </div>
+            `;
+            main.appendChild(div);
+        });
+    }
+</script>
+
+<script>
+    document.getElementById('form1').addEventListener('submit', subForm2);
+    function subForm2(e) {
+        e.preventDefault();
+
+        ajax({
+            url: 'http://localhost',
+            data: JSON.stringify({
+                description: document.getElementById('description').value,
+                parentId: document.getElementById('parentId').value,
+                inn: document.getElementById('inn').value
+            })
+        },
+        function (d) {
+            location.reload();
+        });
+
+        return false;
+    }
+
+    document.getElementById('form2').addEventListener('submit', subForm1);
+    function subForm1(e) {
+        e.preventDefault();
+
+        ajax({
+                url: 'http://localhost',
+                data: JSON.stringify({
+                    description: document.getElementById('description').value,
+                    dateCreate: document.getElementById('dateCreate').value,
+                    dateEnd: document.getElementById('dateEnd').value,
+                    number: document.getElementById('number')
+                })
+            },
+            function (d) {
+                location.reload();
+            });
+
+        return false;
+    }
+</script>
+</body>
+</html>
