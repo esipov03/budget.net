@@ -30,9 +30,22 @@ function dateFromHeader(e) {
     console.log(this.value);
     const day = this.value.split('-')[2];
     const month = this.value.split('-')[1];
-    dStart = dayInYear(day, month, 2019);
-    if (dEnd !== null)
-        sellectSegment( dEnd,dStart);
+    let dStart_l = dayInYear(day, month, this.value.split('-')[0])-1;
+    if(dStart == null )
+        dStart = dStart_l;
+    if (dEnd !== null && dStart_l<dEnd)
+    {
+        dStart = dStart_l;
+        sellectSegment(dEnd,dStart);
+    }
+    else
+    {
+        date_to.value = (date_from.value);
+
+        dEnd = dStart_l;
+        dStart = dStart_l;
+        sellectSegment(dEnd,dStart);
+    }
 }
 
 document.getElementById('date_to').addEventListener('change', dateToHeader);
@@ -40,9 +53,21 @@ function dateToHeader(e) {
     console.log(this.value);
     const day = this.value.split('-')[2];
     const month = this.value.split('-')[1];
-    dEnd = dayInYear(day, month, this.value.split('-')[0]);
-    if (dStart !== null)
-        sellectSegment(dStart, dEnd);
+    let dEnd_l = dayInYear(day, month, this.value.split('-')[0]);
+    if(dEnd == null )
+        dEnd = dEnd_l;
+    if (dStart !== null&& dStart<dEnd_l)
+    {
+        dEnd = dEnd_l;
+        sellectSegment(dEnd,dStart);
+    }
+    else
+    {
+        date_from.value = (date_to.value);
+        dEnd = dEnd_l;
+        dStart = dEnd_l;
+        sellectSegment(dEnd,dStart);
+    }
 }
 
 
