@@ -5,12 +5,10 @@ import com.hakaton.budshet.entity.Enterprise;
 import com.hakaton.budshet.entity.Process;
 import com.hakaton.budshet.model.request.AdminEnterpriseRequest;
 import com.hakaton.budshet.model.request.AdminProcessRequest;
-import com.hakaton.budshet.model.response.AdminProcessResponse;
+import com.hakaton.budshet.model.response.ProcessResponse;
 import com.hakaton.budshet.repository.EnterpriseRepository;
 import com.hakaton.budshet.repository.ProcessRepository;
-import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -35,7 +33,7 @@ public class AdminService {
 
     public ResponseEntity<?> getProcess(){
         List<Process> processes = processRepository.findAll();
-        List<AdminProcessResponse> response = converter.processConverter(processes);
+        List<ProcessResponse> response = converter.processConverter(processes);
 
         return ResponseEntity.ok(response);
     }

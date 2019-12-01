@@ -15,6 +15,8 @@ public class Enterprise {
 
     private String inn;
 
+    private String email;
+
     private int parentId;
 
     public Enterprise() {
@@ -24,6 +26,14 @@ public class Enterprise {
         this.name=request.getName();
         this.inn=request.getInn();
         this.parentId= request.getParentId();
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public int getId() {

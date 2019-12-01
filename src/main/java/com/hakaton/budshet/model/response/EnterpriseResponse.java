@@ -1,23 +1,18 @@
 package com.hakaton.budshet.model.response;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 public class EnterpriseResponse {
     private int id;
 
     private String name;
 
-    //Количество просроченных процессов
-    private int overdueProcessesCount;
-
-    private int waitProcessesCount;
-
-    private int readyProcessesCount;
-
-    //ИД родителя
-
-    private int parentId;
-
+  private  List<EnterpriseResponseProcessField> processes;
 
     public EnterpriseResponse() {
+        processes = new ArrayList<>();
 
     }
 
@@ -37,27 +32,16 @@ public class EnterpriseResponse {
         this.name = name;
     }
 
-    public int getOverdueProcessesCount() {
-        return overdueProcessesCount;
+    public List<EnterpriseResponseProcessField> getProcesses() {
+        return processes;
     }
 
-    public void setOverdueProcessesCount(int overdueProcessesCount) {
-        this.overdueProcessesCount = overdueProcessesCount;
-    }
-
-    public int getWaitProcessesCount() {
-        return waitProcessesCount;
-    }
-
-    public void setWaitProcessesCount(int waitProcessesCount) {
-        this.waitProcessesCount = waitProcessesCount;
-    }
-
-    public int getReadyProcessesCount() {
-        return readyProcessesCount;
-    }
-
-    public void setReadyProcessesCount(int readyProcessesCount) {
-        this.readyProcessesCount = readyProcessesCount;
+    public void setProcesses(List<EnterpriseResponseProcessField> processes) {
+        this.processes = processes;
     }
 }
+
+
+
+
+

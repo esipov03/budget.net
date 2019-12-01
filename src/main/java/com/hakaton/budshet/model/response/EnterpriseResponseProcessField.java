@@ -2,9 +2,10 @@ package com.hakaton.budshet.model.response;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class EnterpriseResponseProcessField {
-    private  int id;
+    private int id;
 
     private int founder;
 
@@ -12,13 +13,13 @@ public class EnterpriseResponseProcessField {
 
     private Date dateEnd;
 
-    private Integer[] nextProcesses;
+    private List<Integer> nextProcesses;
 
-    private Integer[] previousProcesses;
+    private List<Integer> previousProcesses;
 
     public EnterpriseResponseProcessField() {
-        nextProcesses = new Integer[]{};
-        previousProcesses = new Integer[]{};
+        nextProcesses = new ArrayList<>();
+        previousProcesses = new ArrayList<>();
     }
 
     public int getId() {
@@ -53,19 +54,20 @@ public class EnterpriseResponseProcessField {
         this.dateEnd = dateEnd;
     }
 
-    public Integer[] getNextProcesses() {
+
+    public List<Integer> getNextProcesses() {
         return nextProcesses;
     }
 
-    public void setNextProcesses(Integer[] nextProcesses) {
+    public void setNextProcesses(List<Integer> nextProcesses) {
         this.nextProcesses = nextProcesses;
     }
 
-    public Integer[] getPreviousProcesses() {
+    public List<Integer> getPreviousProcesses() {
         return previousProcesses;
     }
 
-    public void setPreviousProcesses(Integer[] previousProcesses) {
+    public void setPreviousProcesses(List<Integer> previousProcesses) {
         this.previousProcesses = previousProcesses;
     }
 }

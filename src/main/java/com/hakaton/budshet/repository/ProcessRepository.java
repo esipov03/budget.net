@@ -17,7 +17,11 @@ public interface ProcessRepository extends JpaRepository<Process,Integer> {
     @Query("From Process p where p.number=:numberParam")
     public Process getProcessByNumber(@Param("numberParam") String number);
 
-    @Query("From Process p where :date between  p.dateCreate and p.dateEnd and p.executorEnterprise.id in (:exec_list)")
-    public List<Process> getProcessBetweenDateStartAndDateEnd(@Param("date") Date date,@Param("exec_list") List<Integer> id);
+
+    @Query("From Process p where p.executorEnterprise.id=:executourId")
+    public List<Process> getProcessByExecutorEnterprise(@Param("executourId") int executourId);
+
+    @Query("From Process p where p.dateCreate < :dateEnd and p.dateEnd > :dateStart and p.executorEnterprise.id=:id")
+    public List<Process> getProcessBetweenDateStartAndDateEnd(@Param("dateStart") Date dateStartU,@Param("dateEnd") Date dateEndU,@Param("id") int id);
 
 }

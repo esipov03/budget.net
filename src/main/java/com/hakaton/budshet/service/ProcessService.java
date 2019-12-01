@@ -3,6 +3,8 @@ package com.hakaton.budshet.service;
 import com.hakaton.budshet.convertor.XmlConvertor;
 import com.hakaton.budshet.entity.Enterprise;
 import com.hakaton.budshet.entity.Process;
+import com.hakaton.budshet.model.response.EnterpriseResponse;
+import com.hakaton.budshet.model.response.EnterpriseResponseProcessField;
 import com.hakaton.budshet.model.xml.ProcessXmlModel;
 import com.hakaton.budshet.repository.EnterpriseRepository;
 import com.hakaton.budshet.repository.ProcessRepository;
@@ -20,6 +22,7 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -88,11 +91,94 @@ public class ProcessService {
         return message;
     }
 
-    public ResponseEntity<List<Enterprise>> getEnterpriseByParentId(int id){
-        List<Enterprise> enterprises = enterpriseRepository.getEnterpriseByParentId(id);
-        return ResponseEntity.ok(enterprises);
+    public Process getProcessById(int id){
+        return processRepository.getOne(id);
+
 
     }
+
+    public ResponseEntity<?> getEnterpriseByParentId(int id){
+        List<Enterprise> enterprises = enterpriseRepository.getEnterpriseByParentId(id);
+        List<EnterpriseResponse> response = new ArrayList<>();
+
+
+        enterprises.forEach(p->{
+            EnterpriseResponse r = new EnterpriseResponse();
+            r.setId(p.getId());
+            r.setName(p.getName());
+            List<EnterpriseResponseProcessField> enterpriseResponseProcessFields = new ArrayList<>();
+
+            List<Process> processes = processRepository.getProcessByExecutorEnterprise(r.getId());
+            processes.forEach(pro->{
+                EnterpriseResponseProcessField processField = new EnterpriseResponseProcessField();
+                processField.setDateCreate(pro.getDateCreate());
+                processField.setDateEnd(pro.getDateEnd());
+                processField.setFounder(pro.getFounderEnterprise().getId());
+                List<Integer> idNextProcesses  = new ArrayList<>();
+                pro.getNextProcess().forEach(np->{
+                    idNextProcesses.add(np.getId());
+                });
+                List<Integer> idPreviousProccess  = new ArrayList<>();
+                pro.getPreviousProcess().forEach(np->{
+
+                    idPreviousProccess.add(np.getId());
+
+                });
+                processField.setNextProcesses(idNextProcesses);
+                processField.setPreviousProcesses(idPreviousProccess);
+                enterpriseResponseProcessFields.add(processField);
+
+
+            });
+                  r.setProcesses(enterpriseResponseProcessFields);
+            response.add(r);
+        });
+        return ResponseEntity.ok(response);
+
+    }
+
+    public ResponseEntity<?> getEnterprisesProcessesBetweenDate(Date dateStart,Date dateEnd,List<Integer> excecutourProcess){
+        List<Enterprise> enterprises = enterpriseRepository.getEnterpriseByListId(excecutourProcess);
+
+        List<EnterpriseResponse> response = new ArrayList<>();
+
+
+        enterprises.forEach(p->{
+            EnterpriseResponse r = new EnterpriseResponse();
+            r.setId(p.getId());
+            r.setName(p.getName());
+            List<EnterpriseResponseProcessField> enterpriseResponseProcessFields = new ArrayList<>();
+
+            List<Process> processes = processRepository.getProcessBetweenDateStartAndDateEnd(dateStart,dateEnd,p.getId());
+            processes.forEach(pro->{
+                EnterpriseResponseProcessField processField = new EnterpriseResponseProcessField();
+                processField.setDateCreate(pro.getDateCreate());
+                processField.setDateEnd(pro.getDateEnd());
+                processField.setFounder(pro.getFounderEnterprise().getId());
+                List<Integer> idNextProcesses  = new ArrayList<>();
+                pro.getNextProcess().forEach(np->{
+                    idNextProcesses.add(np.getId());
+                });
+                List<Integer> idPreviousProccess  = new ArrayList<>();
+                pro.getPreviousProcess().forEach(np->{
+
+                    idPreviousProccess.add(np.getId());
+
+                });
+                processField.setNextProcesses(idNextProcesses);
+                processField.setPreviousProcesses(idPreviousProccess);
+                enterpriseResponseProcessFields.add(processField);
+
+
+            });
+            r.setProcesses(enterpriseResponseProcessFields);
+            response.add(r);
+        });
+        return ResponseEntity.ok(response);
+
+    }
+
+
 
 
 }

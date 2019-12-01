@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class AdminProcessResponse {
+public class ProcessResponse {
 
     private int id;
 
@@ -33,10 +33,10 @@ public class AdminProcessResponse {
 
     private AdminDataEnterprise executorEnterprise;
 
-    public AdminProcessResponse() {
+    public ProcessResponse() {
     }
 
-    public AdminProcessResponse(Process process) {
+    public ProcessResponse(Process process) {
         previousProcess = new ArrayList<>();
         nextProcess = new ArrayList<>();
         this.dateCreate=process.getDateCreate();
