@@ -11,12 +11,13 @@ import java.util.List;
 public class Process {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+     private int id;
 
-    private String number;
+     private String description;
 
+     private String number;
 
-    private String description;
+     private String comment;
 
     @Temporal(TemporalType.DATE)
     private Date dateCreate;
@@ -30,14 +31,28 @@ public class Process {
     @Temporal(TemporalType.DATE)
     private Date dateEndFact;
 
+    @Temporal(TemporalType.DATE)
+    private Date dateApproval;
 
-    public Date getDateEnd() {
-        return dateEnd;
+    @ManyToMany
+    private List<Process>  previousProcess;
+
+    private int statusDocument;
+
+    @ManyToOne
+    private Enterprise founderEnterprise;
+
+    @ManyToOne
+    private Enterprise executorEnterprise;
+
+    @ManyToMany
+    private List<Process> nextProcess;
+
+        public Process() {
+        this.nextProcess = new ArrayList<>();
+        this.previousProcess =  new ArrayList<>();
     }
 
-    public void setDateEnd(Date dateEnd) {
-        this.dateEnd = dateEnd;
-    }
 
     public int getId() {
         return id;
@@ -45,6 +60,14 @@ public class Process {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getNumber() {
@@ -55,12 +78,44 @@ public class Process {
         this.number = number;
     }
 
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
     public Date getDateCreate() {
         return dateCreate;
     }
 
     public void setDateCreate(Date dateCreate) {
         this.dateCreate = dateCreate;
+    }
+
+    public Date getDateEnd() {
+        return dateEnd;
+    }
+
+    public void setDateEnd(Date dateEnd) {
+        this.dateEnd = dateEnd;
+    }
+
+    public Date getDateStartFact() {
+        return dateStartFact;
+    }
+
+    public void setDateStartFact(Date dateStartFact) {
+        this.dateStartFact = dateStartFact;
+    }
+
+    public Date getDateEndFact() {
+        return dateEndFact;
+    }
+
+    public void setDateEndFact(Date dateEndFact) {
+        this.dateEndFact = dateEndFact;
     }
 
     public Date getDateApproval() {
@@ -71,11 +126,19 @@ public class Process {
         this.dateApproval = dateApproval;
     }
 
-    public StatusDocument getStatusDocument() {
+    public List<Process> getPreviousProcess() {
+        return previousProcess;
+    }
+
+    public void setPreviousProcess(List<Process> previousProcess) {
+        this.previousProcess = previousProcess;
+    }
+
+    public int getStatusDocument() {
         return statusDocument;
     }
 
-    public void setStatusDocument(StatusDocument statusDocument) {
+    public void setStatusDocument(int statusDocument) {
         this.statusDocument = statusDocument;
     }
 
@@ -95,67 +158,6 @@ public class Process {
         this.executorEnterprise = executorEnterprise;
     }
 
-
-
-    @Temporal(TemporalType.DATE)
-
-    private Date dateApproval;
-
-    @ManyToMany
-    private List<Process>  previousProcess;
-
-    @ManyToOne
-    private StatusDocument statusDocument;
-
-    @ManyToOne
-    private Enterprise founderEnterprise;
-
-    public TypeDocument getTypeDocument() {
-        return typeDocument;
-    }
-
-    public void setTypeDocument(TypeDocument typeDocument) {
-        this.typeDocument = typeDocument;
-    }
-
-    @ManyToOne
-    private Enterprise executorEnterprise;
-
-    @ManyToOne
-    private TypeDocument typeDocument;
-
-    @ManyToMany
-    private List<Process> nextProcess;
-
-        public Process() {
-        this.nextProcess = new ArrayList<>();
-        this.previousProcess =  new ArrayList<>();
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Date getDateStartFact() {
-        return dateStartFact;
-    }
-
-    public void setDateStartFact(Date dateStartFact) {
-        this.dateStartFact = dateStartFact;
-    }
-
-    public Date getDateEndFact() {
-        return dateEndFact;
-    }
-
-    public void setDateEndFact(Date dateEndFact) {
-        this.dateEndFact = dateEndFact;
-    }
-
     public List<Process> getNextProcess() {
         return nextProcess;
     }
@@ -163,16 +165,4 @@ public class Process {
     public void setNextProcess(List<Process> nextProcess) {
         this.nextProcess = nextProcess;
     }
-
-    public List<Process> getPreviousProcess() {
-        return previousProcess;
-    }
-
-    public void setPreviousProcess(List<Process> previousProcess) {
-        this.previousProcess = previousProcess;
-    }
-
-
-
-
 }

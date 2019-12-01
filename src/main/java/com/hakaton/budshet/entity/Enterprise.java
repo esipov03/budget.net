@@ -1,9 +1,6 @@
 package com.hakaton.budshet.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class Enterprise {
@@ -15,6 +12,8 @@ public class Enterprise {
     private String name;
 
     private String inn;
+
+    private int parentId;
 
     public Enterprise() {
     }
@@ -41,5 +40,13 @@ public class Enterprise {
 
     public void setInn(String inn) {
         this.inn = inn;
+    }
+
+    public int getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(int parentId) {
+        this.parentId = parentId;
     }
 }

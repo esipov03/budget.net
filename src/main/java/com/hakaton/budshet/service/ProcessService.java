@@ -3,13 +3,9 @@ package com.hakaton.budshet.service;
 import com.hakaton.budshet.convertor.XmlConvertor;
 import com.hakaton.budshet.entity.Enterprise;
 import com.hakaton.budshet.entity.Process;
-import com.hakaton.budshet.entity.StatusDocument;
-import com.hakaton.budshet.entity.TypeDocument;
 import com.hakaton.budshet.model.xml.ProcessXmlModel;
 import com.hakaton.budshet.repository.EnterpriseRepository;
 import com.hakaton.budshet.repository.ProcessRepository;
-import com.hakaton.budshet.repository.StatusDocumentRepository;
-import com.hakaton.budshet.repository.TypeDocumentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.w3c.dom.Document;
@@ -36,12 +32,6 @@ public class ProcessService {
     private EnterpriseRepository enterpriseRepository;
 
     @Autowired
-    private StatusDocumentRepository statusDocumentRepository;
-
-    @Autowired
-    private TypeDocumentRepository typeDocumentRepository;
-
-    @Autowired
     private ProcessRepository processRepository;
 
 
@@ -60,46 +50,11 @@ public class ProcessService {
             }
 
             for (ProcessXmlModel processXml : processXmlModels) {
-                Process process = new Process();
 
-                Date dateApproval = new SimpleDateFormat("dd.MM.yyyy").parse(processXml.getDateApproval());
-
-                Date dateCreate = new SimpleDateFormat("dd.MM.yyyy").parse(processXml.getDateCreate());
-
-                Date dateEnd = new SimpleDateFormat("dd.MM.yyyy").parse(processXml.getDateEnd());
                 Enterprise founder = enterpriseRepository.getEnterpriseByInn(processXml.getInnFounder());
                 Enterprise executor = enterpriseRepository.getEnterpriseByInn(processXml.getInnExcecutor());
-                StatusDocument statusDocument = statusDocumentRepository.findById(Integer.parseInt(processXml.getStatus())).get();
-                TypeDocument typeDocument = typeDocumentRepository.findById(Integer.parseInt(processXml.getType())).get();
-
-                List<Process> nextProcess = new ArrayList<>();
-                List<Integer> nextProcessXml = new ArrayList<>();
-                nextProcessXml = processXml.getProcessNext();
-                if(nextProcessXml.size()!=0){
-                    for(int i = 0;i<nextProcessXml.size();i++){
-                        Process pro = processRepository.findById(nextProcessXml.get(i)).get();
-
-                        if(pro!=null){
-                            nextProcess.add(pro);
-                        }
-                    }
-                }
-
-
-                List<Process> previousProcess = new ArrayList<>();
-                List<Integer> previousProcessXml = new ArrayList<>();
-                previousProcessXml = processXml.getProcessPrevious();
-                if(nextProcessXml.size()!=0){
-                    for(int i = 0;i<nextProcessXml.size();i++){
-                        Process pro = processRepository.findById(previousProcessXml.get(i)).get();
-
-                        if(pro!=null){
-                            previousProcess.add(pro);
-                        }
-                    }
-                }
-
-
+                String number = processXml.getNumber();
+                String status = processXml.getStatus();
 
                 if (executor == null) {
                     return "Ошибка загрузки файла. ИНН:" + processXml.getInnExcecutor() + " не найден";
@@ -109,30 +64,22 @@ public class ProcessService {
                     return "Ошибка загрузки файла. ИНН: " + processXml.getInnFounder() + " не найден";
                 }
 
-                if(statusDocument==null){
-                    return "Ошибка загрузки файла. Статус документа:" + processXml.getStatus() + " не найден";
+                Process process = processRepository.getProcessByNumber(number);
 
+                if(process!=null){
+                    if(process.getStatusDocument()!=1){
+                        process.setStatusDocument(Integer.parseInt(status));
+                        process.setComment(xmlText);
+
+                        processRepository.save(process);
+                    } else {
+                        return "Процесс с номером: " + number + " уже проверен";
+                    }
+
+
+                } else {
+                    return "Процесса с номером документа " + number + " не существует";
                 }
-
-                if(typeDocument==null){
-                    return "Ошибка загрузки файла. Тип документа:" + processXml.getType() + " не найден";
-
-                }
-
-
-                String number = processXml.getNumber();
-
-                process.setDateApproval(dateApproval);
-                process.setDateCreate(dateCreate);
-                process.setDateEnd(dateEnd);
-                process.setExecutorEnterprise(executor);
-                process.setFounderEnterprise(founder);
-                process.setNumber(number);
-                process.setStatusDocument(statusDocument);
-                process.setTypeDocument(typeDocument);
-                process.setNextProcess(nextProcess);
-                process.setPreviousProcess(previousProcess);
-                processRepository.save(process);
 
             }
 

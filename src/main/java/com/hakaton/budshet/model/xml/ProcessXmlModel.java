@@ -14,24 +14,6 @@ public class ProcessXmlModel {
     private String DateCreate;
     private String DateApproval;
     private String DateEnd;
-    private List<Integer> ProcessNext;
-    private List<Integer> ProcessPrevious;
-
-    public List<Integer> getProcessNext() {
-        return ProcessNext;
-    }
-
-    public void setProcessNext(List<Integer> processNext) {
-        ProcessNext = processNext;
-    }
-
-    public List<Integer> getProcessPrevious() {
-        return ProcessPrevious;
-    }
-
-    public void setProcessPrevious(List<Integer> processPrevious) {
-        ProcessPrevious = processPrevious;
-    }
 
     public String getDateEnd() {
         return DateEnd;

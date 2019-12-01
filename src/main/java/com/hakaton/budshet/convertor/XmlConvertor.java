@@ -26,23 +26,6 @@ public class XmlConvertor {
             processXml.setStatus((getTagValue("Status", element)));
             processXml.setDateEnd((getTagValue("DateEnd",element)));
 
-            NodeList previousProcessXml = element.getElementsByTagName("ProcessPrevious");
-            List<Integer> previousProcess = new ArrayList<>();
-            for(int i = 0;i<previousProcessXml.getLength();i++){
-                Node item = (Node) previousProcessXml.item(i);
-                previousProcess.add(Integer.parseInt(item.getNodeValue()));
-            }
-
-
-            NodeList nextProcessXml = element.getElementsByTagName("ProcessNext");
-            List<Integer> nextProcess = new ArrayList<>();
-            for(int i = 0;i<nextProcessXml .getLength();i++){
-                Node item = (Node) nextProcessXml.item(i);
-                nextProcess.add(Integer.parseInt(item.getNodeValue()));
-            }
-
-            processXml.setProcessNext(nextProcess);
-            processXml.setProcessPrevious(previousProcess);
 
         }
 

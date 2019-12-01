@@ -8,8 +8,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-
 @Controller
 public class FileContoller {
 
@@ -22,7 +20,7 @@ public class FileContoller {
     }
 
     @RequestMapping(value = "upload")
-    public @ResponseBody String handleFileUpload(@RequestParam("name") String name,@RequestParam("file") MultipartFile file){
+    public @ResponseBody String handleFileUpload(@RequestParam("file") MultipartFile file){
         if (!file.isEmpty()) {
             try {
 
@@ -30,16 +28,14 @@ public class FileContoller {
 
                 String fileText = new String(bytes);
 
-
-
                 return processService.createProcess(fileText);
 
 
             } catch (Exception e) {
-                return "Вам не удалось загрузить " + name + " => " + e.getMessage();
+                return "Вам не удалось загрузить файл => " +  e.getMessage();
             }
         } else {
-            return "Вам не удалось загрузить " + name + " потому что файл пустой.";
+            return "Файл пуст";
         }
     }
 
